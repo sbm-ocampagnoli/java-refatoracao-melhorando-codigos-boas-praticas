@@ -17,6 +17,7 @@ import com.google.gson.JsonParser;
 public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
+        AdopetConsoleApplication adopetConsoleApplication = new AdopetConsoleApplication();
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
             int opcaoEscolhida = 0;
@@ -32,13 +33,13 @@ public class AdopetConsoleApplication {
                 opcaoEscolhida = Integer.parseInt(textoDigitado);
 
                 if (opcaoEscolhida == 1) {
-                    listarAbrigo();
+                    adopetConsoleApplication.listarAbrigo();
                 } else if (opcaoEscolhida == 2) {
-                    cadastrarAbrigo();
+                    adopetConsoleApplication.cadastrarAbrigo();
                 } else if (opcaoEscolhida == 3) {
-                    listarPets();
+                    adopetConsoleApplication.listarPets();
                 } else if (opcaoEscolhida == 4) {
-                    importarPets();
+                    adopetConsoleApplication.importarPets();
                 } else if (opcaoEscolhida == 5) {
                     break;
                 } else {
@@ -52,7 +53,7 @@ public class AdopetConsoleApplication {
         }
     }
 
-    public static void listarAbrigo() throws IOException, InterruptedException {
+    public void listarAbrigo() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
         HttpResponse<String> response = montarRequisicaoGet(uri, client);
@@ -67,7 +68,7 @@ public class AdopetConsoleApplication {
         }
     }
 
-    public static void cadastrarAbrigo() throws IOException, InterruptedException {
+    public void cadastrarAbrigo() throws IOException, InterruptedException {
         System.out.println("Digite o nome do abrigo:");
         String nome = new Scanner(System.in).nextLine();
         System.out.println("Digite o telefone do abrigo:");
@@ -94,7 +95,7 @@ public class AdopetConsoleApplication {
         }
     }
 
-    public static void listarPets() throws IOException, InterruptedException {
+    public void listarPets() throws IOException, InterruptedException {
         System.out.println("Digite o id ou nome do abrigo:");
         String idOuNome = new Scanner(System.in).nextLine();
 
@@ -119,7 +120,7 @@ public class AdopetConsoleApplication {
         }
     }
 
-    public static void importarPets() throws NumberFormatException, IOException, InterruptedException {
+    public void importarPets() throws NumberFormatException, IOException, InterruptedException {
         System.out.println("Digite o id ou nome do abrigo:");
         String idOuNome = new Scanner(System.in).nextLine();
 
@@ -169,7 +170,7 @@ public class AdopetConsoleApplication {
         reader.close();
     }
 
-    private static HttpResponse<String> montarRequisicaoPost(String uri, HttpClient client, JsonObject json)
+    private HttpResponse<String> montarRequisicaoPost(String uri, HttpClient client, JsonObject json)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
@@ -179,7 +180,7 @@ public class AdopetConsoleApplication {
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public static HttpResponse<String> montarRequisicaoGet(String uri, HttpClient client)
+    public HttpResponse<String> montarRequisicaoGet(String uri, HttpClient client)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
