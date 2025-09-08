@@ -1,9 +1,6 @@
 package br.com.alura.service;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
@@ -12,11 +9,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import br.com.alura.client.ClientHttpConfiguration;
+
 public class AbrigoService {
+
+    private ClientHttpConfiguration client;
+
+    public AbrigoService(ClientHttpConfiguration client) {
+        this.client = client;
+    }
+
     public void listarAbrigo() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = montarRequisicaoGet(uri, client);
+        HttpResponse<String> response = client.montarRequisicaoGet(uri);
         String responseBody = response.body();
         JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
         System.out.println("Abrigos cadastrados:");
@@ -41,9 +46,8 @@ public class AbrigoService {
         json.addProperty("telefone", telefone);
         json.addProperty("email", email);
 
-        HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = montarRequisicaoPost(uri, client, json);
+        HttpResponse<String> response = client.montarRequisicaoPost(uri, json);
         int statusCode = response.statusCode();
         String responseBody = response.body();
         if (statusCode == 200) {
@@ -53,24 +57,5 @@ public class AbrigoService {
             System.out.println("Erro ao cadastrar o abrigo:");
             System.out.println(responseBody);
         }
-    }
-
-    public HttpResponse<String> montarRequisicaoGet(String uri, HttpClient client)
-            throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private HttpResponse<String> montarRequisicaoPost(String uri, HttpClient client, JsonObject json)
-            throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
