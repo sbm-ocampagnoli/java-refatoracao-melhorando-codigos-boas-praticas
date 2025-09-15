@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import br.com.alura.client.ClientHttpConfiguration;
+import br.com.alura.domain.Abrigo;
 
 public class AbrigoService {
 
@@ -41,13 +42,13 @@ public class AbrigoService {
         System.out.println("Digite o email do abrigo:");
         String email = new Scanner(System.in).nextLine();
 
-        JsonObject json = new JsonObject();
-        json.addProperty("nome", nome);
-        json.addProperty("telefone", telefone);
-        json.addProperty("email", email);
+        Abrigo abrigo = new Abrigo(nome, telefone, email);
+        abrigo.setNome(nome);
+        abrigo.setTelefone(telefone);
+        abrigo.setEmail(email);
 
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = client.montarRequisicaoPost(uri, json);
+        HttpResponse<String> response = client.montarRequisicaoPost(uri, abrigo);
         int statusCode = response.statusCode();
         String responseBody = response.body();
         if (statusCode == 200) {
