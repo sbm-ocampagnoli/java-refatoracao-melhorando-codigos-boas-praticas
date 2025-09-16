@@ -28,11 +28,15 @@ public class AbrigoService {
 
         List<Abrigo> abrigoList = Arrays.stream(abrigos).toList();
 
-        System.out.println("Abrigos cadastrados:");
-        for (Abrigo abrigo : abrigoList) {
-            long id = abrigo.getId();
-            String nome = abrigo.getNome();
-            System.out.println(id + " - " + nome);
+        if (abrigoList.isEmpty()) {
+            System.out.println("Nenhum abrigo cadastrado.");
+        } else {
+            System.out.println("Abrigos cadastrados:");
+            for (Abrigo abrigo : abrigoList) {
+                long id = abrigo.getId();
+                String nome = abrigo.getNome();
+                System.out.println(id + " - " + nome);
+            }
         }
     }
 

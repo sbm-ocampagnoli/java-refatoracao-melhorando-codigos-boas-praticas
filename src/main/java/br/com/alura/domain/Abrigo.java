@@ -36,6 +36,10 @@ public class Abrigo {
         return email;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -54,5 +58,15 @@ public class Abrigo {
 
     public void setPets(List<Pet> pets) {
         this.pets = pets;
+    }
+
+    @Override
+    public String toString() {
+        return """
+                "id":%s,
+                "nome":"%s",
+                "telefone":"%s",
+                "email":"%s"
+                """.formatted(id, nome, telefone, email);
     }
 }
